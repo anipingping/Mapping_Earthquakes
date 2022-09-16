@@ -30,10 +30,12 @@ let baseMaps = {
 
 // 1. Add a 2nd layer group for the tectonic plate data.
 let allEarthquakes = new L.LayerGroup();
+let tectonicPlates = new L.LayerGroup();
 
 
-// 2. Add a reference to the tectonic plates group to the overlays object.
+// 2. Add a reference to the tectonic plate to the overlay object.
 let overlays = {
+  "Tectonic Plates": tectonicPlates,
   "Earthquakes": allEarthquakes
 };
 
@@ -140,22 +142,31 @@ legend.onAdd = function() {
   legend.addTo(map);
 
 
-  // 3. Use d3.json to make a call to get our Tectonic Plate geoJSON data.
-  d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(function(data) {
+  L.geoJson(data, {
+    color: "#ff6500",
+    weight: 2
+  })
+  .addTo(tectonicPlates);
 
-    // This function returns the style data for each of the earthquakes we plot on
-    // the map. We pass the magnitude of the earthquake into two separate functions
-    // to calculate the color and radius.
-    function styleInfo(feature) {
-      return {
-        opacity: 1,
-        fillOpacity: 1,
-        fillColor: getColor(feature.properties.mag),
-        color: "#000000",
-        radius: getRadius(feature.properties.mag),
-        stroke: true,
-        weight: 0.5
-      };
+  tectonicPlates.addTo(map);
+
+
+  // // 3. Use d3.json to make a call to get our Tectonic Plate geoJSON data.
+  // d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(function(data) {
+
+  //   // This function returns the style data for each of the earthquakes we plot on
+  //   // the map. We pass the magnitude of the earthquake into two separate functions
+  //   // to calculate the color and radius.
+  //   function styleInfo(feature) {
+  //     return {
+  //       opacity: 1,
+  //       fillOpacity: 1,
+  //       fillColor: getColor(feature.properties.mag),
+  //       color: "#000000",
+  //       radius: getRadius(feature.properties.mag),
+  //       stroke: true,
+  //       weight: 0.5
+  //     };
     }
     
   });
